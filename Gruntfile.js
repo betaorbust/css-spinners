@@ -359,6 +359,16 @@ module.exports = function(grunt) {
 			'productionCSS': {
 				'src': [MINIFIED_CSS_VENDOR]
 			}
+		},
+		'autoprefixer': {
+			options: {
+				browsers: ['> 1%', 'last 3 versions', 'ie > 8']
+			},
+			'inPlace': {
+				expand: true,
+				src: CSS_MIN_PATH + '{,**/}*.css'
+			},
+
 		}
 	});
 
@@ -381,11 +391,12 @@ module.exports = function(grunt) {
 	// Compiles and creates the minified CSS files and their dependencies
 	grunt.registerTask('processStyles', 'Compiles and creates the minified CSS files and their dependencies',
 		[
-			'concat:vendorCSS',             // Push all vendor CSS libs together
 			'less:production',              // Minify and cat all CSS/LESS site files together
+			'less:standaloneCSSProduction', // Minify the standalone LESS site libs
+			'autoprefixer:inPlace',         // 
+			'concat:vendorCSS',             // Push all vendor CSS libs together
 			'concat:productionCSS',         // Add vendor libs to the CSS files for production
 			'clean:productionCSS',          // Clean up the temporary production vendor file.
-			'less:standaloneCSSProduction', // Minify the standalone LESS site libs
 			'copy:standaloneCSSVendor'      // Copy over the CSS standalone packages
 		]);
 
@@ -404,9 +415,10 @@ module.exports = function(grunt) {
 	grunt.registerTask('dev', 'Copies over the JS without minifying/catting it, compiles the LESS and dependency assets', [
 		'clean:all',
 		'copy:js',
+		'less:development',
+		'autoprefixer:inPlace',
 		'copy:standaloneJSVendor',
 		'copy:standaloneCSSVendor',
-		'less:development',
 		'createIncludeFiles'
 	]);
 

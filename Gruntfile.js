@@ -219,6 +219,11 @@ module.exports = function(grunt) {
 		}
 	);
 
+	// Uncss config (needed to be external due to variable key name)
+	var uncssFilesConfig = {};
+	uncssFilesConfig[MINIFIED_CSS] = ['src/views/index.html'];
+	console.log(uncssFilesConfig);
+
 	// Project configuration.
 	grunt.initConfig({
 		'concat': {
@@ -369,6 +374,15 @@ module.exports = function(grunt) {
 				src: CSS_MIN_PATH + '{,**/}*.css'
 			},
 
+		},
+		'uncss':{
+			'dist': {
+				'options': {
+					csspath: '../../',
+					stylesheets: [MINIFIED_CSS]
+				},
+				'files': uncssFilesConfig
+			}
 		}
 	});
 
@@ -397,6 +411,7 @@ module.exports = function(grunt) {
 			'concat:vendorCSS',             // Push all vendor CSS libs together
 			'concat:productionCSS',         // Add vendor libs to the CSS files for production
 			'clean:productionCSS',          // Clean up the temporary production vendor file.
+			'uncss:dist',                   // Remove unused CSS
 			'copy:standaloneCSSVendor'      // Copy over the CSS standalone packages
 		]);
 

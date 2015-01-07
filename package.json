@@ -50,7 +50,7 @@
     "dev": "node_modules/grunt-cli/bin/grunt dev",
     "cleaninstall": "rm -rf node_modules/; npm install;",
     "cleaninstallprod": "rm -rf node_modules/; npm install --production;",
-    "start": "node ./bootstrap_www",
+    "start": "node_modules/grunt-cli/bin/grunt; node ./bootstrap_www",
     "removeexamples": "find -E . -regex '.*example(\\.spec)?\\.(js|css|less)' -delete; find -E . -regex '.*example([_a-zA-Z0-9]*)?' -empty -depth -delete;",
     "test": "ulimit -S -n 512; node_modules/karma/bin/karma start --single-run",
     "testcontinuous": "ulimit -S -n 512; node_modules/karma/bin/karma start"

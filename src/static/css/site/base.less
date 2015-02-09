@@ -24,6 +24,7 @@ div>.icon-spinner{ margin: 50px auto; }
 
 // Spinner variables
 @spinnerColor: #FF6700;
+@spinnerColorSecondary: #338FCC;
 @spinnerSize: 40px;
 @spinnerCycleTime: 0.5s;
 
@@ -244,9 +245,82 @@ div>.icon-spinner{ margin: 50px auto; }
 	}
 }
 
+// quarter sliced rotator
+// Sliced rotator
+.icon-spinner-version9{
+	border-radius: 50%;
+	border-right: solid 1em @spinnerColor;
+	height: 100%;
+	width: 100%;
+	animation: spin @spinnerCycleTime linear infinite;
+	-webkit-transform: translate3d(0,0,0);
+}
+
+// half sliced rotator
+.icon-spinner-version10{
+	border-radius: 50%;
+	border-right: solid 1em @spinnerColor;
+	border-top: solid 1em @spinnerColor;
+	height: 100%;
+	width: 100%;
+	animation: spin @spinnerCycleTime linear infinite;
+	-webkit-transform: translate3d(0,0,0);
+}
+
+// Sliced rotator
+.icon-spinner-version11{
+	height: 100%;
+	width: 100%;
+	&:before, &:after{
+		content: '';
+		height: 100%;
+		width: 100%;
+		border-radius: 50%;
+		-webkit-transform: translate3d(0,0,0);
+		border-right: solid 1em @spinnerColor;
+		border-left: solid 1em transparent;
+		content: '';
+		border-right-color: @spinnerColorSecondary;
+		animation: spin @spinnerCycleTime linear infinite;
+		display: block;
+		position: absolute;
+	}
+	&:after{
+		border-right-color: @spinnerColor;
+		animation: spin-reverse @spinnerCycleTime*2.3 linear infinite;
+	}
+}
+
+// three-quarter sliced colored rotator
+.icon-spinner-version12{
+	border-radius: 50%;
+	border-right: solid 1.5em @spinnerColor;
+	border-top: solid 1.5em spin(@spinnerColor, -7);
+	border-bottom: solid 1.5em spin(@spinnerColor, 7);
+	border-left: solid 1.5em @spinnerColor;
+	height: 100%;
+	width: 100%;
+	animation: spin @spinnerCycleTime*3 linear infinite, fade @spinnerCycleTime*3 linear infinite;
+	-webkit-transform: translate3d(0,0,0);
+}
+
 // Animation keyframes
 @keyframes spin {0% {transform:rotate(0deg);} 100% {transform:rotate(360deg);} }
+@keyframes spin-reverse {0% {transform:rotate(0deg);} 100% {transform:rotate(-360deg);} }
 @keyframes height-shrink-50 {50% {transform: scaleY(0.5);}}
 @keyframes height-shrink-20 {50% {transform: scaleY(0.2);}}
 @keyframes shuffle {50% {transform: translateY(200%);}}
 @keyframes fade {50% {opacity: .3;}}
+
+// Will start at the start of animation.
+.one {
+	animation: fade 1s linear 0s infinite;
+}
+// Will start 0.3 seconds after .one
+.two {
+	animation: fade 1s linear 0.3s infinite;
+}
+// Will start some time, unrelated to .one
+.three{
+	animation: fade 1s linear infinite;
+}
